@@ -9,7 +9,7 @@ export const appointmentSchema = z.object({
   phone: z.string().min(7, 'Número de teléfono inválido'),
   email: z.string().email('Email inválido'),
   appointment_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato de fecha inválido (YYYY-MM-DD)'),
-  appointment_time: z.string().regex(/^\d{2}:\d{2}$/, 'Formato de hora inválido (HH:mm)'),
+  appointment_time: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/, 'Formato de hora inválido (HH:mm o HH:mm:ss)'),
   status: z.enum(['pending', 'confirmed', 'completed', 'cancelled']).default('pending'),
 });
 
