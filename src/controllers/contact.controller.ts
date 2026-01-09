@@ -3,11 +3,23 @@ import { resend } from '../services/resend.service';
 import { contactSchema } from '../validators';
 import { contactNotificationTemplate } from '../templates/emails';
 import { config } from '../config';
+import { verifyRecaptcha } from '../services/recacaptcha.service';
 
 export const sendContactMessage = async (req: Request, res: Response) => {
   try {
     // Validar datos de entrada
     const validatedData = contactSchema.parse(req.body);
+
+    // Verificar reCAPTCHA
+    const isRecaptchaValid = await verifyRecaptcha(validatedData.recaptchaToken);
+    if (!isRecaptchaValid) {
+      return res.status(400).json({
+        success: false,
+        error: 'reCAPTCHA inválido',
+      });
+    }
+
+     const { recaptchaToken, ...contactData } = validatedData;
 
     // Enviar email al administrador
     const { data, error } = await resend.emails.send({

@@ -17,6 +17,9 @@ export const config = {
   frontend: {
     url: process.env.FRONTEND_URL || 'http://localhost:5173',
   },
+   recaptcha: {
+    secretKey: process.env.RECAPTCHA_SECRET_KEY || '', 
+  },
   port: process.env.PORT || 3000,
   nodeEnv: process.env.NODE_ENV || 'development',
 };
@@ -26,6 +29,7 @@ const requiredEnvVars = [
   'SUPABASE_URL',
   'SUPABASE_ANON_KEY',
   'RESEND_API_KEY',
+  'RECAPTCHA_SECRET_KEY'
 ];
 
 for (const envVar of requiredEnvVars) {
