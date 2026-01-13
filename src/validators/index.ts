@@ -17,7 +17,7 @@ export const contactSchema = z.object({
   name: z.string().min(3, 'El nombre debe tener al menos 3 caracteres'),
   email: z.string().email('Email inválido'),
   phone: z.string().min(7, 'Número de teléfono inválido'),
-  subject: z.string().min(5, 'El asunto debe tener al menos 5 caracteres'),
-  message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
+  subject: z.string().min(2, 'El asunto debe tener al menos 2 caracteres'),
+  message: z.string().min(4, 'El mensaje debe tener al menos 4 caracteres'),
   recaptchaToken: z.string().min(1, 'Token de reCAPTCHA requerido'),
 });
