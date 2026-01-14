@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { createAppointment, getAppointments } from '../controllers/appointment.controller';
 import { sendContactMessage } from '../controllers/contact.controller';
 import { getStats } from '../controllers/stats.controller';
+import { toggleScheduleStatus, getSchedules , createSchedule } from '../controllers/schedule.controller';
 
 const router = Router();
 
@@ -11,6 +12,7 @@ router.get('/health', (req, res) => {
 });
 
 // Appointments
+router.get('/appointments', getAppointments);
 router.post('/appointments', createAppointment);
 
 // Contact
@@ -19,6 +21,9 @@ router.post('/contact', sendContactMessage);
 // Stats
 router.get('/stats', getStats);
 
-router.get('/appointments', getAppointments);
+// Schedules
+router.get('/schedules', getSchedules);
+router.post('/schedules', createSchedule);
+router.patch('/schedules/:id/status', toggleScheduleStatus);
 
 export default router;
