@@ -96,3 +96,71 @@ export const createAppointment = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getAppointments = async (req: Request, res: Response) => {
+  try {
+    const { date, cityId, status } = req.query;
+
+    let query = supabase
+      .from('appointments')
+      .select(`
+        id,
+        full_name,
+        id_number,
+        citation_number,
+        phone,
+        email,
+        appointment_date,
+        appointment_time,
+        status,
+        created_at,
+        city_id,
+        cities (
+          id,
+          name
+        ),
+        course_types (
+          id,
+          name
+        )
+      `)
+      .order('appointment_date', { ascending: true })
+      .order('appointment_time', { ascending: true });
+
+    // 🔹 Filtro por fecha
+    if (date) {
+      query = query.eq('appointment_date', date);
+    }
+
+    // 🔹 Filtro por ciudad
+    if (cityId) {
+      query = query.eq('city_id', cityId);
+    }
+
+    // 🔹 Filtro por estado
+    if (status) {
+      query = query.eq('status', status);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error obteniendo citas:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Error al obtener los agendamientos',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error: any) {
+    console.error('Error en getAppointments:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Error interno del servidor',
+    });
+  }
+};

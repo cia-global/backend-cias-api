@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createAppointment } from '../controllers/appointment.controller';
+import { createAppointment, getAppointments } from '../controllers/appointment.controller';
 import { sendContactMessage } from '../controllers/contact.controller';
 import { getStats } from '../controllers/stats.controller';
 
@@ -18,5 +18,7 @@ router.post('/contact', sendContactMessage);
 
 // Stats
 router.get('/stats', getStats);
+
+router.get('/appointments', getAppointments);
 
 export default router;
