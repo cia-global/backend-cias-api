@@ -20,7 +20,7 @@ export const config = {
    recaptcha: {
     secretKey: process.env.RECAPTCHA_SECRET_KEY || '', 
   },
-  port: process.env.PORT,
+  port: process.env.PORT || 3000,
   nodeEnv: process.env.NODE_ENV || 'development',
 };
 
