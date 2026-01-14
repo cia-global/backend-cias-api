@@ -14,7 +14,7 @@ export const appointmentSchema = z.object({
 });
 
 export const contactSchema = z.object({
-  name: z.string().min(3, 'El nombre debe tener al menos 3 caracteres'),
+  name: z.string().min(3, 'El nombre debe tener al menos 3 caracteres'), 
   email: z.string().email('Email inválido'),
   phone: z.string().min(7, 'Número de teléfono inválido'),
   subject: z.string().min(2, 'El asunto debe tener al menos 2 caracteres'),
