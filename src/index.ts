@@ -9,7 +9,7 @@ const app = express();
 
 // Middleware
 app.use(corsMiddleware);
-app.options('*', corsMiddleware);
+app.options('/*', corsMiddleware);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
