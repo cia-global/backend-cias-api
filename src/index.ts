@@ -3,14 +3,14 @@ import cors from 'cors';
 import { config } from './config';
 import routes from './routes';
 import { errorHandler, notFound } from './middleware/errorHandler';
+import { corsMiddleware } from './middleware/cors';
 
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: config.frontend.url,
-  credentials: true,
-}));
+app.use(corsMiddleware);
+app.options('*', corsMiddleware);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
