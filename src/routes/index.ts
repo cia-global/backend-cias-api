@@ -22,8 +22,8 @@ router.post('/contact', sendContactMessage);
 router.get('/stats', getStats);
 
 // Schedules
-router.get('/schedules', getSchedules);
-router.post('/schedules', createSchedule);
 router.patch('/schedules/:id/status', toggleScheduleStatus);
+router.post('/schedules', createSchedule);
+router.get('/schedules', getSchedules);
 
 export default router;
