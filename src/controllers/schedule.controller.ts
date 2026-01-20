@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { supabase } from '../services/supabase.service';
+import { supabaseAdmin } from '../services/supabaseAdmin.service';
 
 
 export const getSchedules = async (req: Request, res: Response) => {
@@ -81,24 +82,54 @@ export const createSchedule = async (req: Request, res: Response) => {
 };
 
 export const toggleScheduleStatus = async (req: Request, res: Response) => {
+  console.log('🔁 toggleScheduleStatus llamado');
+
   try {
+
     const { id } = req.params;
     const { is_active } = req.body;
 
-    const { error } = await supabase
+    // 2️⃣ Validaciones básicas
+    if (!id) {
+      console.warn('⚠️ ID no recibido en params');
+      return res.status(400).json({
+        success: false,
+        error: 'ID de horario requerido',
+      });
+    }
+
+    if (typeof is_active !== 'boolean') {
+      console.warn('⚠️ is_active no es boolean:', is_active);
+      return res.status(400).json({
+        success: false,
+        error: 'is_active debe ser boolean',
+      });
+    }
+
+    // 3️⃣ Ejecutar update en Supabase
+    const { data, error } = await supabaseAdmin
       .from('schedules')
       .update({ is_active })
-      .eq('id', id);
+      .eq('id', id)
+      .select()
+      ;
 
-    if (error) throw error;
 
+    if (error) {
+      console.error('❌ Error Supabase:', error);
+      throw error;
+    }
     return res.json({
       success: true,
+      data,
     });
+
   } catch (error: any) {
+    console.error('🔥 Error en toggleScheduleStatus:', error);
+
     return res.status(500).json({
       success: false,
-      error: error.message,
+      error: error.message || 'Error interno del servidor',
     });
   }
 };
