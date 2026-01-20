@@ -29,10 +29,6 @@ export const getSchedules = async (req: Request, res: Response) => {
       query = query.eq('city_id', cityId);
     }
 
-    if (onlyActive === 'true') {
-      query = query.eq('is_active', true);
-    }
-
     const { data, error } = await query;
 
     if (error) {
