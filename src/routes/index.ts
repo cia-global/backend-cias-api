@@ -26,4 +26,5 @@ router.patch('/schedules/:id/status', toggleScheduleStatus);
 router.post('/schedules', createSchedule);
 router.get('/schedules', getSchedules);
 
+
 export default router;
