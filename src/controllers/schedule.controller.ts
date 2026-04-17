@@ -5,7 +5,9 @@ import { supabaseAdmin } from '../services/supabaseAdmin.service';
 
 export const getSchedules = async (req: Request, res: Response) => {
   try {
-    const { cityId, onlyActive } = req.query;
+    const { cityId, onlyActive, admin } = req.query;
+
+   const isAdmin = admin === 'true';
 
     let query = supabase
       .from('schedules')
@@ -28,6 +30,18 @@ export const getSchedules = async (req: Request, res: Response) => {
     if (cityId) {
       query = query.eq('city_id', cityId);
     }
+
+     if (!isAdmin) {
+      // usuarios normales → solo activos
+      query = query.eq('is_active', true);
+    } else if (onlyActive === 'true') {
+      // admin forzando solo activos
+      query = query.eq('is_active', true);
+    } else if (onlyActive === 'false') {
+      // admin forzando solo inactivos
+      query = query.eq('is_active', false);
+    }
+
 
     const { data, error } = await query;
 

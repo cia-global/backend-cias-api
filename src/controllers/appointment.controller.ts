@@ -5,6 +5,7 @@ import { appointmentSchema } from '../validators';
 import { appointmentConfirmationTemplate } from '../templates/emails';
 import { config } from '../config';
 import { City, CourseType } from '../types';
+import { sendWhatsAppNotification } from '../services/whatsapp.service';
 
 export const createAppointment = async (req: Request, res: Response) => {
   try {
@@ -72,6 +73,21 @@ export const createAppointment = async (req: Request, res: Response) => {
       console.error('Error al enviar email:', emailError);
       // No retornamos error aquí porque el agendamiento ya fue creado
     }
+
+    try {
+  if (city && course) {
+    await sendWhatsAppNotification({
+      full_name: validatedData.full_name,
+      phone: validatedData.phone,
+      appointment_date: validatedData.appointment_date,
+      appointment_time: validatedData.appointment_time,
+      city_name: city.name,
+      course_name: course.name,
+    });
+  }
+} catch (whatsappError) {
+  console.error('Error enviando WhatsApp:', whatsappError);
+}
 
     return res.status(201).json({
       success: true,
