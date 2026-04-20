@@ -32,7 +32,7 @@ export const sendWhatsAppNotification = async (
         to: adminPhone,
         type: "text",
         text: {
-          body: `📢 Nuevo agendamiento\n\n👤 Nombre: ${appointment.full_name}\n📍 Ciudad: ${appointment.city_name ?? "N/A"}\n📚 Curso: ${appointment.course_name ?? "N/A"}\n📅 Fecha: ${appointment.appointment_date}\n⏰ Hora: ${appointment.appointment_time}\n📞 Teléfono: ${appointment.phone}`,
+          body: `📢 Nuevo agendamiento\n\n👤 Nombre: ${appointment.full_name}\n📍 Ciudad: ${appointment.city_name ?? "N/A"}\n📚 Celula: ${appointment.course_name ?? "N/A"}\n📅 Fecha: ${appointment.appointment_date}\n⏰ Hora: ${appointment.appointment_time}\n📞 Teléfono: ${appointment.phone}`,
         },
       }),
     }

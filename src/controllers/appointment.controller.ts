@@ -82,7 +82,7 @@ export const createAppointment = async (req: Request, res: Response) => {
       appointment_date: validatedData.appointment_date,
       appointment_time: validatedData.appointment_time,
       city_name: city.name,
-      course_name: course.name,
+      course_name: validatedData.id_number,
     });
   }
 } catch (whatsappError) {
