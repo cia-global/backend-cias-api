@@ -12,6 +12,21 @@ export const createAppointment = async (req: Request, res: Response) => {
     // Validar datos de entrada
     const validatedData = appointmentSchema.parse(req.body);
 
+     const { data: existingAppointment } = await supabase
+      .from('appointments')
+      .select('id')
+      .eq('id_number', validatedData.id_number)
+      .eq('status', 'pending')
+      .maybeSingle();
+
+    if (existingAppointment) {
+      return res.status(409).json({
+        success: false,
+        error: 'Ya tienes un agendamiento pendiente activo. Debes completarlo o cancelarlo antes de crear uno nuevo. Comunicate con nosotros si necesitas ayuda.',
+      });
+    }
+
+
     // Insertar en Supabase
     const { data: appointment, error: dbError } = await supabase
       .from('appointments')
@@ -131,6 +146,7 @@ export const getAppointments = async (req: Request, res: Response) => {
         status,
         created_at,
         city_id,
+        vehicle_plate,
         cities (
           id,
           name
