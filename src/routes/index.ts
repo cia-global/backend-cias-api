@@ -3,6 +3,7 @@ import { createAppointment, getAppointments } from '../controllers/appointment.c
 import { sendContactMessage } from '../controllers/contact.controller';
 import { getStats } from '../controllers/stats.controller';
 import { toggleScheduleStatus, getSchedules , createSchedule } from '../controllers/schedule.controller';
+import { getCityReviews, getReviewsStats, syncSingleCity } from '../controllers/google.controller';
 
 const router = Router();
 
@@ -26,5 +27,9 @@ router.patch('/schedules/:id/status', toggleScheduleStatus);
 router.post('/schedules', createSchedule);
 router.get('/schedules', getSchedules);
 
+// google places details
+router.post("/sync-city/:cityId", syncSingleCity);
+router.get("/city-reviews/:cityId", getCityReviews);
+router.get("/reviews-stats", getReviewsStats);
 
 export default router;
