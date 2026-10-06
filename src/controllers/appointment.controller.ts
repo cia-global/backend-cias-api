@@ -90,14 +90,16 @@ export const createAppointment = async (req: Request, res: Response) => {
     }
 
     try {
-  if (city && course) {
+  if (city) {
     await sendWhatsAppNotification({
       full_name: validatedData.full_name,
       phone: validatedData.phone,
       appointment_date: validatedData.appointment_date,
       appointment_time: validatedData.appointment_time,
-      city_name: city.name,
-      course_name: validatedData.id_number,
+      email: validatedData.email,
+      branch_name: city.nameSede || city.name,
+      document_number: validatedData.id_number,
+      recipient_phone: city.phone,
     });
   }
 } catch (whatsappError) {
