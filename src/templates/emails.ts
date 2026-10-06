@@ -16,6 +16,23 @@ export const appointmentConfirmationTemplate = (
     month: 'long',
     day: 'numeric'
   });
+  const mapsUrl = city.maps_url?.trim();
+  let mapsLink = '';
+
+  if (mapsUrl) {
+    try {
+      const parsedMapsUrl = new URL(mapsUrl);
+      if (parsedMapsUrl.protocol === 'https:') {
+        const safeMapsUrl = parsedMapsUrl.toString().replace(/&/g, '&amp;');
+        mapsLink = `
+                <p style="margin: 8px 0 0; font-size: 14px;">
+                  <a href="${safeMapsUrl}" target="_blank" style="color: #1d4ed8; text-decoration: underline;">Abrir ubicación en Google Maps</a>
+                </p>`;
+      }
+    } catch {
+      // Si el enlace no es una URL válida, se omite para evitar crear un enlace roto.
+    }
+  }
 
   return `
 <!DOCTYPE html>
@@ -32,11 +49,20 @@ export const appointmentConfirmationTemplate = (
         <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
           <!-- Header -->
           <tr>
-            <td style="background: linear-gradient(135deg, #2563eb 0%, #16a34a 50%, #facc15 100%); padding: 40px 30px; text-align: center;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 28px;">
-                ¡Agendamiento Confirmado!
-              </h1>
-          </td>
+            <td style="background-color: #030712; background-image: linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #030712 100%); padding: 40px 30px; text-align: center;">
+              <table align="center" cellpadding="0" cellspacing="0" role="presentation" style="margin: 0 auto;">
+                <tr>
+                  <td valign="middle" style="padding-right: 14px;">
+                    <img src="https://preqwoznjufvrrzwfzqs.supabase.co/storage/v1/object/public/imgSedes/logocompleto.png" width="48" height="48" alt="Cursos Comparendos" style="display: block; width: 48px; height: 48px; border: 0; border-radius: 8px;">
+                  </td>
+                  <td valign="middle">
+                    <h1 style="margin: 0; color: #ffffff; font-size: 28px; line-height: 1.25;">
+                      ¡Agendamiento Confirmado!
+                    </h1>
+                  </td>
+                </tr>
+              </table>
+            </td>
           </tr>
           
           <!-- Body -->
@@ -75,8 +101,9 @@ export const appointmentConfirmationTemplate = (
               <!-- Location Details -->
               <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 30px; border-radius: 4px;">
                 <strong style="color: #856404; font-size: 14px; display: block; margin-bottom: 10px;">📍 UBICACIÓN</strong>
-                <p style="margin: 0 0 5px; color: #856404; font-size: 15px; font-weight: bold;">${city.name}</p>
+                <p style="margin: 0 0 5px; color: #856404; font-size: 15px; font-weight: bold;">${city.nameSede ? `${city.nameSede} - ` : ''}${city.name}</p>
                 <p style="margin: 0; color: #856404; font-size: 14px;">${city.address}</p>
+                ${mapsLink}
               </div>
               
               <p style="margin: 0 0 10px; color: #666666; font-size: 14px; line-height: 1.6;">
